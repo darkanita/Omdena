@@ -6,17 +6,17 @@ bucket = 'darkanita'
 key = 'Safety_GPS1.csv'
 
 def first_preprocessing(data,app_id,app_code):
-    dataSet = format_date(dataSet,'INCIDENT DATE')
-    dataSet = drop_duplicates(dataSet,['#'])
-    print(dataSet.shape)
-    dataSet = drop_duplicates(dataSet,['INCIDENT TITLE', 'INCIDENT DATE', 'LOCATION', 'DESCRIPTION','CATEGORY', 'LATITUDE', 'LONGITUDE', 'More Info'])
-    print(dataSet.shape)
-    dataSet,category = create_category_columns(dataSet)
-    print(dataSet.shape)
+    data = format_date(data,'INCIDENT DATE')
+    data = drop_duplicates(data,['#'])
+    print(data.shape)
+    data = drop_duplicates(data,['INCIDENT TITLE', 'INCIDENT DATE', 'LOCATION', 'DESCRIPTION','CATEGORY', 'LATITUDE', 'LONGITUDE', 'More Info'])
+    print(data.shape)
+    data,category = create_category_columns(dataSet)
+    print(data.shape)
     print(category)
-    dataSet,problems = add_data_location(dataSet,app_id,app_code)
+    data,problems = add_data_location(data,app_id,app_code)
     print(problems)
-    print(dataSet.shape)
+    print(data.shape)
     return data
 
 def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
