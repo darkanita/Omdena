@@ -73,17 +73,80 @@ def format_date(data,column,formatDate='%Y-%m-%d %H:%M:%S', sourceDate=['%d %b %
                     data[column][row] = datetime.strptime(data[column][row], valformat).strftime(formatDate)
                 except:
                     print(data[column][row])
-                    
+
     data[column] = pd.to_datetime(data[column])
     data['YEAR'] = data[column].dt.year
     data['MONTH'] = data[column].dt.month
     data['DAY'] = data[column].dt.day
     data['HOUR'] = data[column].dt.hour
     data['DAYOFWEEK'] = [datetime.strptime(str(date), '%Y-%m-%d %H:%M:%S').strftime('%A') for date in data[column]]
-
+    
     return data
 
 def drop_duplicates(data,key):
+    '''
+        Drop duplicates by the columns in key.
+    '''
     data = data.drop_duplicates(key).reset_index(drop=True)
+    
     return data
 
+def add_data_location(data,app_id,app_code,columns=['LATITUDE','LONGITUDE','LOCATION']):
+    '''
+        Complete information with coordinates geographics or with location.
+    '''
+    data['ADDRESS'] = None
+    data['POSITION'] = None
+    data['COUNTRY'] = None
+    data['STATE'] = None
+    data['COUNTY'] = None
+    data['LABEL'] = None
+    data['CITY'] = None
+    data['DISTRICT'] = None
+    data['STREET'] = None
+    problems = []
+    for row in range(len(data['LATITUDE'])):
+        lat = data[columns[0]][row]
+        lon = data[columns[1]][row]
+        loc = data[columns[2]][row]
+        try:
+            address, position = get_location_coord(lat,lon,loc,app_id,app_code)
+            data['ADDRESS'][row] = address
+            data['POSITION'][row] = position
+            data['COUNTRY'][row] = address['AdditionalData'][0]['value']
+            data['STATE'][row] = address['AdditionalData'][1]['value']
+            data['COUNTY'][row] = address['AdditionalData'][2]['value']
+            data['LABEL'][row] = address['Label']
+            if 'City' in address.keys():
+                data['CITY'][row] = address['City']
+            if 'District' in address.keys():
+                data['DISTRICT'][row] = address['District']
+            if 'Street' in address.keys():
+                data['STREET'][row] = address['Street']
+            if np.isnan(data[columns[0]][row]):
+                data[columns[0]][row] = position['Latitude']
+                data[columns[1]][row] = position['Longitude'] 
+        except:
+            problems.append(data['#'][row])
+    
+    return data, problems
+
+def create_category_columns(data,column='CATEGORY'):
+    '''
+        Create column for category
+    '''   
+    category = []
+    for row in range(len(data[column])):
+        for cat in data[column][row].split(','):
+            if cat != ' ':
+                cat = cat.replace('Harrassment','Harassment')
+                cat = cat.replace('Taking pictures without permission','Taking pictures')
+                if cat.strip() not in category:
+                    category.append(cat.strip())
+                    if cat.strip() not in data.columns:
+                        data[cat.strip()] = 0
+            data[cat.strip()][row] = 1 
+    
+    data['NUMBER_CAT'] = [len(val[:-2].split(',')) for val in data[column]]
+    
+    return data, category
