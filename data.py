@@ -73,7 +73,8 @@ def format_date(data,column,formatDate='%Y-%m-%d %H:%M:%S', sourceDate=['%d %b %
                     data[column][row] = datetime.strptime(data[column][row], valformat).strftime(formatDate)
                 except:
                     print(data[column][row])
-    
+                    
+    data[column] = pd.to_datetime(data[column])
     data['YEAR'] = data[column].dt.year
     data['MONTH'] = data[column].dt.month
     data['DAY'] = data[column].dt.day
