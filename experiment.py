@@ -7,8 +7,8 @@ app_id = 'aBCYHqNarl95prQ6M6RN'
 app_code = 'MGGRNCaXh4WHjFgnef7SlA'
 
 # Conection to AWS S3
-aws_access_key_id='AKIATU6OZUAMMCHEC24U'
-aws_secret_access_key='y/4MfZRwG7JI4gMPQJHJi5petuWgYmNl0U46ux6c'
+aws_access_key_id='YOUR ACCESS KEY ID
+aws_secret_access_key='YOUR SECRET ACCESS KEY'
 
 urlDataSet = 'https://darkanita.s3-sa-east-1.amazonaws.com/Safecity+Reports+-+28072019.csv'
 dataSet = load_data(urlDataSet)
@@ -23,3 +23,4 @@ dataSet.shape
 dataSet,category = create_category_columns(dataSet)
 dataSet.shape
 dataSet.head()
+obj = upload_data(dataSet,bucket,key,aws_access_key_id,aws_secret_access_key)
