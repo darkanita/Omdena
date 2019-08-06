@@ -11,7 +11,7 @@ aws_access_key_id='YOUR KEY'
 aws_secret_access_key='YOUR KEY'
 
 bucket = 'darkanita'
-key = 'Safety_GPS1.csv'
+key = 'Safety_GPS.csv'
 
 urlDataSet = 'https://darkanita.s3-sa-east-1.amazonaws.com/Safecity+Reports+-+28072019.csv'
 dataSet = load_data(urlDataSet)
