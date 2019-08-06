@@ -5,7 +5,7 @@ pd.options.mode.chained_assignment = None
 bucket = 'darkanita'
 key = 'Safety_GPS1.csv'
 
-def first_preprocessing(data):
+def first_preprocessing(data,app_id,app_code):
     dataSet = format_date(dataSet,'INCIDENT DATE')
     dataSet = drop_duplicates(dataSet,['#'])
     print(dataSet.shape)
@@ -23,7 +23,7 @@ def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
     urlDataSet = 'https://darkanita.s3-sa-east-1.amazonaws.com/Safecity+Reports+-+28072019.csv'
     dataSet = load_data(urlDataSet)
     print(dataSet.shape)
-    dataSet = first_preprocessing(dataSet)
+    dataSet = first_preprocessing(dataSet,app_id,app_code)
     #urlDataSet = 'https://darkanita.s3-sa-east-1.amazonaws.com/Safety_GPS1.csv'
     #dataSet = load_data(urlDataSet)
     #print(dataSet.shape)
