@@ -138,13 +138,14 @@ def create_category_columns(data,column='CATEGORY'):
     category = []
     for row in range(len(data[column])):
         for cat in data[column][row].split(','):
-            if cat != ' ':
+            if cat != ' ' or cat != '':
                 cat = cat.replace('Harrassment','Harassment')
                 cat = cat.replace('Taking pictures without permission','Taking pictures')
                 if cat.strip() not in category:
                     category.append(cat.strip())
                     if cat.strip() not in data.columns:
                         data[cat.strip()] = 0
+        
             data[cat.strip()][row] = 1 
     
     data['NUMBER_CAT'] = [len(val[:-2].split(',')) for val in data[column]]

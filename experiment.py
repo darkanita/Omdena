@@ -2,25 +2,47 @@ from data import *
 
 pd.options.mode.chained_assignment = None 
 
-# Conection to HERE.COM
-app_id = 'aBCYHqNarl95prQ6M6RN'
-app_code = 'MGGRNCaXh4WHjFgnef7SlA'
+bucket = 'darkanita'
+key = 'Safety_GPS1.csv'
 
-# Conection to AWS S3
-aws_access_key_id='YOUR ACCESS KEY ID
-aws_secret_access_key='YOUR SECRET ACCESS KEY'
+def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
+    urlDataSet = 'https://darkanita.s3-sa-east-1.amazonaws.com/Safecity+Reports+-+28072019.csv'
+    dataSet = load_data(urlDataSet)
+    print(dataSet.shape)
+    dataSet = format_date(dataSet,'INCIDENT DATE')
+    dataSet = drop_duplicates(dataSet,['#'])
+    print(dataSet.shape)
+    dataSet = drop_duplicates(dataSet,['INCIDENT TITLE', 'INCIDENT DATE', 'LOCATION', 'DESCRIPTION','CATEGORY', 'LATITUDE', 'LONGITUDE', 'More Info'])
+    print(dataSet.shape)
+    dataSet,category = create_category_columns(dataSet)
+    print(dataSet.shape)
+    dataSet,problems = add_data_location(dataSet,app_id,app_code)
+    print(dataSet.shape)
+    print(dataSet.head())
+    obj = upload_data(dataSet,bucket,key,aws_access_key_id,aws_secret_access_key)
+    print(obj)
 
-urlDataSet = 'https://darkanita.s3-sa-east-1.amazonaws.com/Safecity+Reports+-+28072019.csv'
-dataSet = load_data(urlDataSet)
-dataSet.shape
-dataSet = format_date(dataSet,'INCIDENT DATE')
-dataSet = drop_duplicates(dataSet,['INCIDENT TITLE', 'INCIDENT DATE', 'LOCATION', 'DESCRIPTION','CATEGORY', 'LATITUDE', 'LONGITUDE', 'More Info'])
-dataSet.shape
-dataSet = drop_duplicates(dataSet,['#'])
-dataSet.shape
-dataSet,problems = add_data_location(dataSet,app_id,app_code)
-dataSet.shape
-dataSet,category = create_category_columns(dataSet)
-dataSet.shape
-dataSet.head()
-obj = upload_data(dataSet,bucket,key,aws_access_key_id,aws_secret_access_key)
+if __name__ == '__main__':
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Prepare dataset")
+
+    parser.add_argument('--aws_access_key_id', '-aws_id',
+        help="aws_access_key_id"
+    )
+
+    parser.add_argument('--aws_secret_access_key', '-aws_key',
+        help="aws_secret_access_key"
+    )
+
+    parser.add_argument('--here_id', '-app_id',
+        help="app_id"
+    )
+
+    parser.add_argument('--here_code', '-app_code',
+        help="app_code"
+    )
+    
+    args = parser.parse_args()
+    main(args.aws_access_key_id, args.aws_secret_access_key, args.here_id,args.here_code)
