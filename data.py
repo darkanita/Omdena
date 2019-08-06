@@ -140,7 +140,9 @@ def create_category_columns(data,column='CATEGORY'):
         for cat in data[column][row].split(','):
             if cat != ' ' or cat != '':
                 cat = cat.replace('Harrassment','Harassment')
+                cat = cat.replace('Indecent exposure', 'Indecent Exposure/Masturbation in public')
                 cat = cat.replace('Taking pictures without permission','Taking pictures')
+                cat = cat.replace('Ogling/Lewd Facial Expressions/Staring','Ogling/Facial Expressions/Staring')
                 if cat.strip() not in category:
                     category.append(cat.strip())
                     if cat.strip() not in data.columns:
