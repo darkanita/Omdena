@@ -32,7 +32,7 @@ def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
     print(len(get_problems)
     dataSet,get_problems = add_data_location(dataSet,app_id,app_code,get_problems)
     print(dataSet.shape)
-    print(len(problems)
+    print(len(get_problems)
     print(dataSet.head())
     print(dataSet['COUNTRY'].unique())
     obj = upload_data(dataSet,bucket,key,aws_access_key_id,aws_secret_access_key)
