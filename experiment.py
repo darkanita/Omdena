@@ -11,7 +11,7 @@ def first_preprocessing(data,app_id,app_code):
     print(data.shape)
     data = drop_duplicates(data,['INCIDENT TITLE', 'INCIDENT DATE', 'LOCATION', 'DESCRIPTION','CATEGORY', 'LATITUDE', 'LONGITUDE', 'More Info'])
     print(data.shape)
-    data,category = create_category_columns(dataSet)
+    data,category = create_category_columns(data)
     print(data.shape)
     print(category)
     data,problems = add_data_location(data,app_id,app_code)
