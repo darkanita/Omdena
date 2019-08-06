@@ -91,45 +91,70 @@ def drop_duplicates(data,key):
     
     return data
 
-def add_data_location(data,app_id,app_code,columns=['LATITUDE','LONGITUDE','LOCATION']):
+def add_data_location(data,app_id,app_code,problems=[],columns=['LATITUDE','LONGITUDE','LOCATION']):
     '''
         Complete information with coordinates geographics or with location.
     '''
-    data['ADDRESS'] = None
-    data['POSITION'] = None
-    data['COUNTRY'] = None
-    data['STATE'] = None
-    data['COUNTY'] = None
-    data['LABEL'] = None
-    data['CITY'] = None
-    data['DISTRICT'] = None
-    data['STREET'] = None
-    problems = []
-    for row in range(len(data['LATITUDE'])):
-        lat = data[columns[0]][row]
-        lon = data[columns[1]][row]
-        loc = data[columns[2]][row]
-        try:
-            address, position = get_location_coord(lat,lon,loc,app_id,app_code)
-            data['ADDRESS'][row] = address
-            data['POSITION'][row] = position
-            data['COUNTRY'][row] = address['AdditionalData'][0]['value']
-            data['STATE'][row] = address['AdditionalData'][1]['value']
-            data['COUNTY'][row] = address['AdditionalData'][2]['value']
-            data['LABEL'][row] = address['Label']
-            if 'City' in address.keys():
-                data['CITY'][row] = address['City']
-            if 'District' in address.keys():
-                data['DISTRICT'][row] = address['District']
-            if 'Street' in address.keys():
-                data['STREET'][row] = address['Street']
-            if np.isnan(data[columns[0]][row]):
-                data[columns[0]][row] = position['Latitude']
-                data[columns[1]][row] = position['Longitude'] 
-        except:
-            problems.append(data['#'][row])
+    if not problems:
+        data['ADDRESS'] = None
+        data['POSITION'] = None
+        data['COUNTRY'] = None
+        data['STATE'] = None
+        data['COUNTY'] = None
+        data['LABEL'] = None
+        data['CITY'] = None
+        data['DISTRICT'] = None
+        data['STREET'] = None
+        problems = []
+        for row in range(len(data['LATITUDE'])):
+            lat = data[columns[0]][row]
+            lon = data[columns[1]][row]
+            loc = data[columns[2]][row]
+            try:
+                address, position = get_location_coord(lat,lon,loc,app_id,app_code)
+                data['ADDRESS'][row] = address
+                data['POSITION'][row] = position
+                data['COUNTRY'][row] = address['AdditionalData'][0]['value']
+                data['STATE'][row] = address['AdditionalData'][1]['value']
+                data['COUNTY'][row] = address['AdditionalData'][2]['value']
+                data['LABEL'][row] = address['Label']
+                if 'City' in address.keys():
+                    data['CITY'][row] = address['City']
+                if 'District' in address.keys():
+                    data['DISTRICT'][row] = address['District']
+                if 'Street' in address.keys():
+                    data['STREET'][row] = address['Street']
+                if np.isnan(data[columns[0]][row]):
+                    data[columns[0]][row] = position['Latitude']
+                    data[columns[1]][row] = position['Longitude'] 
+            except:
+                problems.append(row)
+        return data, problems
+    else:
+        new_problems = []
+        for row in problems:
+            try:
+                address, position = get_location_coord(lat,lon,loc,app_id,app_code)
+                data['ADDRESS'][row] = address
+                data['POSITION'][row] = position
+                data['COUNTRY'][row] = address['AdditionalData'][0]['value']
+                data['STATE'][row] = address['AdditionalData'][1]['value']
+                data['COUNTY'][row] = address['AdditionalData'][2]['value']
+                data['LABEL'][row] = address['Label']
+                if 'City' in address.keys():
+                    data['CITY'][row] = address['City']
+                if 'District' in address.keys():
+                    data['DISTRICT'][row] = address['District']
+                if 'Street' in address.keys():
+                    data['STREET'][row] = address['Street']
+                if np.isnan(data[columns[0]][row]):
+                    data[columns[0]][row] = position['Latitude']
+                    data[columns[1]][row] = position['Longitude'] 
+            except:
+                new_problems.append(row)
+        return data, new_problems
+
     
-    return data, problems
 
 def create_category_columns(data,column='CATEGORY'):
     '''
