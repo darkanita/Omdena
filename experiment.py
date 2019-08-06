@@ -27,10 +27,10 @@ def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
     urlDataSet = 'https://darkanita.s3-sa-east-1.amazonaws.com/Safety_GPS1.csv'
     dataSet = load_data(urlDataSet)
     print(dataSet.shape)
-    dataSet,problems = add_data_location(dataSet,app_id,app_code)
+    dataSet,get_problems = add_data_location(dataSet,app_id,app_code)
     print(dataSet.shape)
-    print(len(problems)
-    dataSet,problems = add_data_location(dataSet,app_id,app_code,problems)
+    print(len(get_problems)
+    dataSet,get_problems = add_data_location(dataSet,app_id,app_code,get_problems)
     print(dataSet.shape)
     print(len(problems)
     print(dataSet.head())
