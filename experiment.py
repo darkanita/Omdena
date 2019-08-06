@@ -3,7 +3,7 @@ from data import *
 pd.options.mode.chained_assignment = None 
 
 bucket = 'darkanita'
-key = 'Safety_GPS1.csv'
+key = 'Safety_GPS.csv'
 
 def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
     urlDataSet = 'https://darkanita.s3-sa-east-1.amazonaws.com/Safecity+Reports+-+28072019.csv'
