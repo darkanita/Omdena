@@ -26,14 +26,17 @@ def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
     #dataSet = first_preprocessing(dataSet,app_id,app_code)
     urlDataSet = 'https://darkanita.s3-sa-east-1.amazonaws.com/Safety_GPS1.csv'
     dataSet = load_data(urlDataSet)
+    #dataSet_India = dataSet[dataSet['COUNTRY']=='India']
+    #dataSet_India = dataSet_India[dataSet_India['CITY'].isin(['Delhi','Mumbai'])]
     print(dataSet.shape)
-    print(dataSet.head())
-    print(dataSet['INCIDENT TITLE'].unique())
+    dataSet= normalize_text(dataSet)
+    print(data[['INCIDENT DATE','DESCRIPTION','INCIDENT TITLE WORDS','DESCRIPTION WORDS']].head())
+    #print(dataSet_India['INCIDENT TITLE'].unique()[:100])
     #print(dataSet['STATE'].unique())
     #print(dataSet['COUNTY'].unique())
     #print(dataSet['CITY'].unique())
-    #obj = upload_data(dataSet,bucket,key,aws_access_key_id,aws_secret_access_key)
-    #print(obj)
+    obj = upload_data(dataSet,bucket,key,aws_access_key_id,aws_secret_access_key)
+    print(obj)
 
 if __name__ == '__main__':
     import argparse

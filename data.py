@@ -5,6 +5,11 @@ import boto3
 import datetime
 from datetime import datetime
 import numpy as np
+import nltk
+from nltk import sent_tokenize
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem.porter import PorterStemmer
 
 pd.options.mode.chained_assignment = None 
 
@@ -176,3 +181,15 @@ def create_category_columns(data,column='CATEGORY'):
     data['NUMBER_CAT'] = [len(val[:-2].split(',')) for val in data[column]]
     
     return data, category
+
+def normalize_text(data,columns=['INCIDENT TITLE','DESCRIPTION']):
+    nltk.download('punkt')
+    nltk.download('stopwords')
+    nltk.download('wordnet')
+    porter = PorterStemmer()
+    WNlemma = nltk.WordNetLemmatizer()
+    for col in columns:
+        data[col+' TOKENS'] = [word_tokenize(text) for text in data[col]]
+        stop_words = set(stopwords.words('english'))
+        data[col+' WORDS'] = [[porter.stem(WNlemma.lemmatize(word.lower())) for word in text if word.isalpha() and not word in stop_words] for text in data[col+' TOKENS'] ]
+    return data
