@@ -30,7 +30,7 @@ def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
     #dataSet_India = dataSet_India[dataSet_India['CITY'].isin(['Delhi','Mumbai'])]
     print(dataSet.shape)
     dataSet= normalize_text(dataSet)
-    print(data[['INCIDENT DATE','DESCRIPTION','INCIDENT TITLE WORDS','DESCRIPTION WORDS']].head())
+    print(dataSet[['INCIDENT DATE','DESCRIPTION','INCIDENT TITLE WORDS','DESCRIPTION WORDS']].head())
     #print(dataSet_India['INCIDENT TITLE'].unique()[:100])
     #print(dataSet['STATE'].unique())
     #print(dataSet['COUNTY'].unique())
