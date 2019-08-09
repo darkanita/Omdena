@@ -182,14 +182,14 @@ def create_category_columns(data,column='CATEGORY'):
     
     return data, category
 
-def normalize_text(data,columns=['INCIDENT TITLE','DESCRIPTION']):
+def normalize_text(data,column='INCIDENT TITLE'):
     nltk.download('punkt')
     nltk.download('stopwords')
     nltk.download('wordnet')
     porter = PorterStemmer()
     WNlemma = nltk.WordNetLemmatizer()
-    for col in columns:
-        data[col+' TOKENS'] = [word_tokenize(text) for text in data[col]]
-        stop_words = set(stopwords.words('english'))
-        data[col+' WORDS'] = [[porter.stem(WNlemma.lemmatize(word.lower())) for word in text if word.isalpha() and not word in stop_words] for text in data[col+' TOKENS'] ]
+    stop_words = set(stopwords.words('english'))
+    data[column+' SENTENCES'] = [sent_tokenize(text) for text in data[column]]
+    data[column+' TOKENS'] = [word_tokenize(text) for text in data[column]]
+    data[column+' WORDS'] = [[porter.stem(WNlemma.lemmatize(word.lower())) for word in text if word.isalpha() and not word in stop_words] for text in data[column+' TOKENS'] ]
     return data
