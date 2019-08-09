@@ -153,7 +153,6 @@ def add_data_location(data,app_id,app_code,columns=['LATITUDE','LONGITUDE','LOCA
     
     return data, new_problems
 
-    
 
 def create_category_columns(data,column='CATEGORY'):
     '''
