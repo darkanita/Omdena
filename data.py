@@ -10,6 +10,7 @@ from nltk import sent_tokenize
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
+import sys
 
 pd.options.mode.chained_assignment = None 
 
@@ -189,12 +190,18 @@ def normalize_text(data,column='INCIDENT TITLE'):
     porter = PorterStemmer()
     WNlemma = nltk.WordNetLemmatizer()
     stop_words = set(stopwords.words('english'))
+    i = 0
     for row in range(len(data[column])):
         try:
             data[column+' SENTENCES'] = sent_tokenize(data[column][row])
+            print('OK')
+            print(data[column][row])
         except Exception as e:
             print(str(e))
             print(data[column][row])
+            i += 1
+            if i == 10:
+                sys.exit(1)
 
     #data[column+' SENTENCES'] = [sent_tokenize(text) for text in data[column]]
     #data[column+' TOKENS'] = [word_tokenize(text) for text in data[column]]
