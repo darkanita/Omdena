@@ -190,15 +190,15 @@ def normalize_text(data,column='INCIDENT TITLE'):
     porter = PorterStemmer()
     WNlemma = nltk.WordNetLemmatizer()
     stop_words = set(stopwords.words('english'))
-    i = 0
-    for row in range(len(data[column])):
-        try:
-            data[column+' SENTENCES'] = str(sent_tokenize(data[column][row]))
-        except Exception as e:
-            print(str(e))
-            print(data[column][row])
+    #i = 0
+    #for row in range(len(data[column])):
+    #   try:
+    #        data[column+' SENTENCES'] = str(sent_tokenize(data[column][row]))
+    #    except Exception as e:
+    #        print(str(e))
+    #        print(data[column][row])
 
-    #data[column+' SENTENCES'] = [sent_tokenize(text) for text in data[column]]
-    #data[column+' TOKENS'] = [word_tokenize(text) for text in data[column]]
-    #data[column+' WORDS'] = [[porter.stem(WNlemma.lemmatize(word.lower())) for word in text if word.isalpha() and not word in stop_words] for text in data[column+' TOKENS'] ]
+    data[column+' SENTENCES'] = [str(sent_tokenize(text)) for text in data[column]]
+    data[column+' TOKENS'] = [word_tokenize(text) for text in data[column]]
+    data[column+' WORDS'] = [[porter.stem(WNlemma.lemmatize(word.lower())) for word in text if word.isalpha() and not word in stop_words] for text in data[column+' TOKENS'] ]
     return data
