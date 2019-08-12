@@ -193,7 +193,7 @@ def normalize_text(data,column='INCIDENT TITLE'):
     i = 0
     for row in range(len(data[column])):
         try:
-            data[column+' SENTENCES'] = sent_tokenize(data[column][row])
+            data[column+' SENTENCES'] = str(sent_tokenize(data[column][row]))
             print('OK')
             print(data[column][row])
         except Exception as e:
