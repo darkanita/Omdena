@@ -189,7 +189,7 @@ def normalize_text(data,column='INCIDENT TITLE'):
     porter = PorterStemmer()
     WNlemma = nltk.WordNetLemmatizer()
     stop_words = set(stopwords.words('english'))
-    for row in data[column]:
+    for row in range(len(data[column])):
         try:
             data[column+' SENTENCES'] = sent_tokenize(data[column][row])
         except:
