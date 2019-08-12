@@ -189,7 +189,13 @@ def normalize_text(data,column='INCIDENT TITLE'):
     porter = PorterStemmer()
     WNlemma = nltk.WordNetLemmatizer()
     stop_words = set(stopwords.words('english'))
-    data[column+' SENTENCES'] = [print(text,sent_tokenize(text)) for text in data[column]]
+    for row in data[column]:
+        try:
+            data[column+' SENTENCES'] = sent_tokenize(data[column][row])
+        except:
+            print(data[column][row])
+
+    #data[column+' SENTENCES'] = [sent_tokenize(text) for text in data[column]]
     #data[column+' TOKENS'] = [word_tokenize(text) for text in data[column]]
     #data[column+' WORDS'] = [[porter.stem(WNlemma.lemmatize(word.lower())) for word in text if word.isalpha() and not word in stop_words] for text in data[column+' TOKENS'] ]
     return data
