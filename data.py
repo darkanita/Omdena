@@ -194,14 +194,23 @@ def normalize_text(data,column='INCIDENT TITLE'):
         try:
             data[column+' SENTENCES'] = str(sent_tokenize(data[column][row]))
             data[column+' TOKENS'] = str(word_tokenize(data[column][row]))
-            words = []
-            for word in data[column+' TOKENS'][row]:
-                if word.isalpha() and not word in stop_words:
-                    words.append(porter.stem(WNlemma.lemmatize(word.lower())))
-            data[column+' WORDS'] = str(words)
         except Exception as e:
             print(str(e))
             print(data[column][row])
+    
+    
+    for row in range(len(data[column])):
+        words = []
+        for word in data[column+' TOKENS'][row]:
+            if word.isalpha() and not word in stop_words:
+                try:
+                    value = porter.stem(WNlemma.lemmatize(word.lower()))
+                except Exception as e:
+                    value = None
+                    print(str(e))
+                    print(word)
+                words.append(value)
+        data[column+' WORDS'] = str(words)
 
     #data[column+' SENTENCES'] = [str(sent_tokenize(text)) for text in data[column]]
     #data[column+' TOKENS'] = [word_tokenize(text) for text in data[column]]
