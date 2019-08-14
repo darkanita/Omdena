@@ -236,7 +236,7 @@ def translate_columns(data,column='INCIDENT TITLE'):
         flag = True
         try:
             translator = Translator()
-            value = translator.detect(data[column][row]).lang
+            lang = translator.detect(data[column][row]).lang
             time.sleep(5)
         except Exception as e:
             print(data[column][row])
@@ -245,12 +245,13 @@ def translate_columns(data,column='INCIDENT TITLE'):
             flag = False
         try:
             translator = Translator()
-            if value != 'en' and flag:
+            if lang != 'en' and flag:
                 value = translator.translate(data[column][row]).text
                 data[column][row] = str(value)
                 time.sleep(5)
         except Exception as e:
             print(data[column][row])
             print(str(e))
+            sys.exit(1)
                                 
     return data,problems
