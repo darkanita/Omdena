@@ -232,6 +232,6 @@ def translate_columns(data,column='INCIDENT TITLE'):
     translator = Translator()
     for row in range(len(data[column])):
         if not data[column][row]:
-            if (translator.detect(data[column][row])).lang =! 'en':
+            if (translator.detect(data[column][row])).lang != 'en':
                 data[column][row] = (translator.translate(data[column][row])).text
     return data
