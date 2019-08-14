@@ -233,25 +233,19 @@ def translate_columns(data,column='INCIDENT TITLE'):
     problems = []
 
     for row in range(len(data[column])):
-        flag = True
         try:
             translator = Translator()
             lang = translator.detect(data[column][row]).lang
+            print(lang)
             time.sleep(5)
-        except Exception as e:
-            print(data[column][row])
-            print(str(e))
-            problems.append(row)
-            flag = False
-        try:
             translator = Translator()
-            if lang != 'en' and flag:
+            if lang != 'en' :
                 value = translator.translate(data[column][row]).text
                 data[column][row] = str(value)
                 time.sleep(5)
         except Exception as e:
             print(data[column][row])
             print(str(e))
-            sys.exit(1)
-                                
+            problems.append(row)
+            break        
     return data,problems
