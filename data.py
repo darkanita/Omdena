@@ -11,6 +11,7 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 import sys
+import ast
 
 pd.options.mode.chained_assignment = None 
 
@@ -207,7 +208,7 @@ def normalize_text(data,column='INCIDENT TITLE'):
     
     for row in range(len(data[column])):
         words = []
-        for word in data[column+' TOKENS'][row]:
+        for word in ast.literal_eval(data[column+' TOKENS'][row]):
             if word.isalpha() and not word in stop_words:
                 try:
                     value = porter.stem(WNlemma.lemmatize(word.lower()))
