@@ -31,7 +31,7 @@ def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
     print(dataSet.shape)
     #dataSet= normalize_text(dataSet,'INCIDENT TITLE')
     dataSet= normalize_text(dataSet,'DESCRIPTION')
-    print(dataSet[['INCIDENT TITLE','DESCRIPTION','INCIDENT TITLE WORDS','DESCRIPTION WORDS']].head())
+    print(dataSet[['DESCRIPTION','DESCRIPTION WORDS']].head())
     #print(dataSet_India['INCIDENT TITLE'].unique()[:100])
     #print(dataSet['STATE'].unique())
     #print(dataSet['COUNTY'].unique())
