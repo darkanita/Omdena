@@ -241,6 +241,7 @@ def translate_columns(data,column='INCIDENT TITLE'):
         except Exception as e:
             print(data[column][row])
             print(str(e))
+            problems.append(row)
             flag = False
         try:
             translator = Translator()
@@ -252,4 +253,4 @@ def translate_columns(data,column='INCIDENT TITLE'):
             print(data[column][row])
             print(str(e))
                                 
-    return data
+    return data,problems

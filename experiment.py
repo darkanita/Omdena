@@ -29,8 +29,9 @@ def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
     #dataSet_India = dataSet[dataSet['COUNTRY']=='India']
     #dataSet_India = dataSet_India[dataSet_India['CITY'].isin(['Delhi','Mumbai'])]
     print(dataSet.shape)
-    dataSet = translate_columns(dataSet,'INCIDENT TITLE')
-    dataSet = translate_columns(dataSet,'DESCRIPTION')
+    dataSet,problems = translate_columns(dataSet,'INCIDENT TITLE')
+    print(problems)
+    #dataSet = translate_columns(dataSet,'DESCRIPTION')
     dataSet= normalize_text(dataSet,'INCIDENT TITLE')
     dataSet= normalize_text(dataSet,'DESCRIPTION')
     print(dataSet[['DESCRIPTION','DESCRIPTION WORDS']].head())
