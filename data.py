@@ -193,17 +193,19 @@ def normalize_text(data,column='INCIDENT TITLE'):
     stop_words = set(stopwords.words('english'))
     for row in range(len(data[column])):
         try:
-            data[column+' SENTENCES'] = str(sent_tokenize(data[column][row]))
+            data[column+' SENTENCES'][row] = str(sent_tokenize(data[column][row]))
             #data[column+' TOKENS'] = str(word_tokenize(data[column][row]))
         except Exception as e:
             print("SENTENCES"+str(e))
+            data[column+' SENTENCES'][row] = None
             print(data[column][row])
     for row in range(len(data[column])):
         try:
             #data[column+' SENTENCES'] = str(sent_tokenize(data[column][row]))
-            data[column+' TOKENS'] = str(word_tokenize(data[column][row]))
+            data[column+' TOKENS'][row] = str(word_tokenize(data[column][row]))
         except Exception as e:
             print("TOKENS "+str(e))
+            data[column+' TOKENS'][row] = None
             print(data[column][row])
     
     for row in range(len(data[column])):
@@ -217,7 +219,7 @@ def normalize_text(data,column='INCIDENT TITLE'):
                     print("NORMALIZE "+str(e))
                     print(word)
                 words.append(value)
-        data[column+' WORDS'] = str(words)
+        data[column+' WORDS'][row] = str(words)
 
     #data[column+' SENTENCES'] = [str(sent_tokenize(text)) for text in data[column]]
     #data[column+' TOKENS'] = [word_tokenize(text) for text in data[column]]
