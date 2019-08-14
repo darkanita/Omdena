@@ -13,6 +13,7 @@ from nltk.stem.porter import PorterStemmer
 import sys
 import ast
 from googletrans import Translator
+import time
 
 
 pd.options.mode.chained_assignment = None 
@@ -229,19 +230,26 @@ def normalize_text(data,column='INCIDENT TITLE'):
     return data
 
 def translate_columns(data,column='INCIDENT TITLE'):
+    problems = []
+
     for row in range(len(data[column])):
+        flag = True
         try:
             translator = Translator()
             value = translator.detect(data[column][row]).lang
-            print(value)
-            if value != 'en':
-                translator = Translator()
-                value = translator.translate(data[column][row]).text
-                print(value)
-                data[column][row] = str(value)
+            time.sleep(5)
         except Exception as e:
             print(data[column][row])
             print(str(e))
-
-                
+            flag = False
+        try:
+            translator = Translator()
+            if value != 'en' and flag:
+                value = translator.translate(data[column][row]).text
+                data[column][row] = str(value)
+                time.sleep(5)
+        except Exception as e:
+            print(data[column][row])
+            print(str(e))
+                                
     return data
