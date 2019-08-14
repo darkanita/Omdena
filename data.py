@@ -12,6 +12,8 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 import sys
 import ast
+from googletrans import Translator
+
 
 pd.options.mode.chained_assignment = None 
 
@@ -196,7 +198,7 @@ def normalize_text(data,column='INCIDENT TITLE'):
             data[column+' SENTENCES'][row] = str(sent_tokenize(data[column][row]))
             #data[column+' TOKENS'] = str(word_tokenize(data[column][row]))
         except Exception as e:
-            print("SENTENCES"+str(e))
+            #print("SENTENCES"+str(e))
             data[column+' SENTENCES'][row] = str([])
             print(data[column][row])
     for row in range(len(data[column])):
@@ -204,19 +206,19 @@ def normalize_text(data,column='INCIDENT TITLE'):
             #data[column+' SENTENCES'] = str(sent_tokenize(data[column][row]))
             data[column+' TOKENS'][row] = str(word_tokenize(data[column][row]))
         except Exception as e:
-            print("TOKENS "+str(e))
+            #print("TOKENS "+str(e))
             data[column+' TOKENS'][row] = str([])
             print(data[column][row])
     
     for row in range(len(data[column])):
         words = []
         for word in ast.literal_eval(data[column+' TOKENS'][row]):
-            if word.isalpha() and not word in stop_words:
+            if word.isalpha() and not word in stop_words and len(word)>2:
                 try:
                     value = porter.stem(WNlemma.lemmatize(word.lower()))
                 except Exception as e:
                     value = None
-                    print("NORMALIZE "+str(e))
+                    #print("NORMALIZE "+str(e))
                     print(word)
                 words.append(value)
         data[column+' WORDS'][row] = str(words)
@@ -224,4 +226,12 @@ def normalize_text(data,column='INCIDENT TITLE'):
     #data[column+' SENTENCES'] = [str(sent_tokenize(text)) for text in data[column]]
     #data[column+' TOKENS'] = [word_tokenize(text) for text in data[column]]
     #data[column+' WORDS'] = [[porter.stem(WNlemma.lemmatize(word.lower())) for word in text if word.isalpha() and not word in stop_words] 
+    return data
+
+def translate_columns(data,column='INCIDENT TITLE'):
+    translator = Translator()
+    for row in range(len(data[column])):
+        if not data[column][row]:
+            if (translator.detect(data[column][row])).lang =! 'en':
+                data[column][row] = (translator.translate(data[column][row])).text
     return data
