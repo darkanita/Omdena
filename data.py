@@ -195,7 +195,7 @@ def normalize_text(data,column='INCIDENT TITLE'):
             data[column+' SENTENCES'] = str(sent_tokenize(data[column][row]))
             data[column+' TOKENS'] = str(word_tokenize(data[column][row]))
         except Exception as e:
-            print(str(e))
+            print("SENTENCES TOKENS "+str(e))
             print(data[column][row])
     
     
@@ -207,7 +207,7 @@ def normalize_text(data,column='INCIDENT TITLE'):
                     value = porter.stem(WNlemma.lemmatize(word.lower()))
                 except Exception as e:
                     value = None
-                    print(str(e))
+                    print("NORMALIZE "+str(e))
                     print(word)
                 words.append(value)
         data[column+' WORDS'] = str(words)
