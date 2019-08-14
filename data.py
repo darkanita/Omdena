@@ -200,7 +200,7 @@ def normalize_text(data,column='INCIDENT TITLE'):
         except Exception as e:
             #print("SENTENCES"+str(e))
             data[column+' SENTENCES'][row] = str([])
-            print(data[column][row])
+            #print(data[column][row])
     for row in range(len(data[column])):
         try:
             #data[column+' SENTENCES'] = str(sent_tokenize(data[column][row]))
@@ -208,7 +208,7 @@ def normalize_text(data,column='INCIDENT TITLE'):
         except Exception as e:
             #print("TOKENS "+str(e))
             data[column+' TOKENS'][row] = str([])
-            print(data[column][row])
+            #print(data[column][row])
     
     for row in range(len(data[column])):
         words = []
@@ -219,7 +219,7 @@ def normalize_text(data,column='INCIDENT TITLE'):
                 except Exception as e:
                     value = None
                     #print("NORMALIZE "+str(e))
-                    print(word)
+                    #print(word)
                 words.append(value)
         data[column+' WORDS'][row] = str(words)
 
