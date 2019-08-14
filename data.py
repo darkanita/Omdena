@@ -231,10 +231,11 @@ def normalize_text(data,column='INCIDENT TITLE'):
 def translate_columns(data,column='INCIDENT TITLE'):
     translator = Translator()
     for row in range(len(data[column])):
+        translator = Translator()
         try:
             value = translator.detect(data[column][row]).lang
             if value != 'en':
-                data[column][row] = translator.translate(data[column][row]).text
+                data[column][row] = str(translator.translate(data[column][row]).text)
         except Exception as e:
             print(data[column][row])
             print(str(e))
