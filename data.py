@@ -236,7 +236,7 @@ def translate_columns(data,column='INCIDENT TITLE'):
             if value != 'en':
                 data[column][row] = translator.translate(data[column][row]).text
         except:
-            print(column][row])
+            print(data[column][row])
             print(str(e))
 
                 
