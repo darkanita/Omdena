@@ -31,7 +31,7 @@ def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
     print(dataSet.shape)
     dataSet = translate_columns(dataSet,'INCIDENT TITLE')
     dataSet = translate_columns(dataSet,'DESCRIPTION')
-    #dataSet= normalize_text(dataSet,'INCIDENT TITLE')
+    dataSet= normalize_text(dataSet,'INCIDENT TITLE')
     dataSet= normalize_text(dataSet,'DESCRIPTION')
     print(dataSet[['DESCRIPTION','DESCRIPTION WORDS']].head())
     print(dataSet[dataSet['DESCRIPTION WORDS'].isna()]['DESCRIPTION'].head())
