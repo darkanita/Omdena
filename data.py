@@ -217,6 +217,7 @@ def normalize_text(data,column='INCIDENT TITLE'):
     
     words_total = []
     table = str.maketrans('', '', string.punctuation)
+    pattern = '[0-9]'
     for row in range(len(data[column])):
         words = []
         for word in ast.literal_eval(data[column+' TOKENS'][row]):
