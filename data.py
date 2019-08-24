@@ -235,7 +235,7 @@ def normalize_text(data,column='INCIDENT TITLE'):
     #data[column+' SENTENCES'] = [str(sent_tokenize(text)) for text in data[column]]
     #data[column+' TOKENS'] = [word_tokenize(text) for text in data[column]]
     #data[column+' WORDS'] = [[porter.stem(WNlemma.lemmatize(word.lower())) for word in text if word.isalpha() and not word in stop_words] 
-    return words_total,data
+    return data,words_total
 
 def translate_columns(data,column='INCIDENT TITLE'):
     problems = []
@@ -245,14 +245,14 @@ def translate_columns(data,column='INCIDENT TITLE'):
         try:
             translator = Translator(service_urls=['translate.google.com','translate.google.co.kr',])
             lang = translator.detect(data[column][row]).lang
-            print(lang)
-            time.sleep(5)
+            #print(lang)
+            #time.sleep(5)
             if lang != 'en' :
                 print(data[column][row])
                 value = translator.translate(data[column][row]).text
                 print(str(value))
                 data[column][row] = str(value)
-                time.sleep(5)
+                #time.sleep(5)
         except Exception as e:
             print(data[column][row])
             print(str(e))
