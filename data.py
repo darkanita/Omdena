@@ -12,9 +12,12 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 import sys
 import ast
-from googletrans import Translator
+#from googletrans import Translator
 import time
-
+from langdetect import detect 
+from translate import Translator
+import string
+import re
 
 pd.options.mode.chained_assignment = None 
 
@@ -211,12 +214,17 @@ def normalize_text(data,column='INCIDENT TITLE'):
             data[column+' TOKENS'][row] = str([])
             #print(data[column][row])
     
+    words_total = []
+    table = str.maketrans('', '', string.punctuation)
     for row in range(len(data[column])):
         words = []
         for word in ast.literal_eval(data[column+' TOKENS'][row]):
+            word = str(re.sub(pattern, '', word))
+            word = word.lower()
             if word.isalpha() and not word in stop_words and len(word)>2:
                 try:
-                    value = porter.stem(WNlemma.lemmatize(word.lower()))
+                    value = porter.stem(WNlemma.lemmatize(word,pos='v'))
+                    words_total.append(value)
                 except Exception as e:
                     value = None
                     #print("NORMALIZE "+str(e))
@@ -227,20 +235,19 @@ def normalize_text(data,column='INCIDENT TITLE'):
     #data[column+' SENTENCES'] = [str(sent_tokenize(text)) for text in data[column]]
     #data[column+' TOKENS'] = [word_tokenize(text) for text in data[column]]
     #data[column+' WORDS'] = [[porter.stem(WNlemma.lemmatize(word.lower())) for word in text if word.isalpha() and not word in stop_words] 
-    return data
+    return words_total,data
 
 def translate_columns(data,column='INCIDENT TITLE'):
     problems = []
-
+    translator= Translator(to_lang="English")
     for row in range(len(data[column])):
         try:
-            translator = Translator()
-            lang = translator.detect(data[column][row]).lang
+            lang = detect(data[column][row])
             print(lang)
             time.sleep(5)
             translator = Translator()
             if lang != 'en' :
-                value = translator.translate(data[column][row]).text
+                value = translator.translate(data[column][row])
                 data[column][row] = str(value)
                 time.sleep(5)
         except Exception as e:

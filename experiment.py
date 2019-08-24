@@ -32,8 +32,8 @@ def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
     dataSet,problems = translate_columns(dataSet,'INCIDENT TITLE')
     print(problems)
     #dataSet = translate_columns(dataSet,'DESCRIPTION')
-    dataSet= normalize_text(dataSet,'INCIDENT TITLE')
-    dataSet= normalize_text(dataSet,'DESCRIPTION')
+    title_words,dataSet= normalize_text(dataSet,'INCIDENT TITLE')
+    desc_words,dataSet= normalize_text(dataSet,'DESCRIPTION')
     print(dataSet[['DESCRIPTION','DESCRIPTION WORDS']].head())
     print(dataSet[dataSet['DESCRIPTION WORDS'].isna()]['DESCRIPTION'].head())
     #print(dataSet_India['INCIDENT TITLE'].unique()[:100])
@@ -67,3 +67,6 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
     main(args.aws_access_key_id, args.aws_secret_access_key, args.here_id,args.here_code)
+
+
+
