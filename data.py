@@ -244,7 +244,7 @@ def translate_columns(data,column='INCIDENT TITLE'):
     for row in range(len(data[column])):
         try:
             translator = Translator(service_urls=['translate.google.com','translate.google.co.kr',])
-            lang = translator.detect(data[column][row])
+            lang = translator.detect(data[column][row]).lang
             print(lang)
             time.sleep(5)
             if lang != 'en' :
