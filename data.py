@@ -12,10 +12,10 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 import sys
 import ast
-#from googletrans import Translator
+from googletrans import Translator
 import time
-from langdetect import detect 
-from translate import Translator
+#from langdetect import detect 
+#from translate import Translator
 import string
 import re
 
@@ -239,15 +239,17 @@ def normalize_text(data,column='INCIDENT TITLE'):
 
 def translate_columns(data,column='INCIDENT TITLE'):
     problems = []
-    translator= Translator(to_lang="English")
+    #translator= Translator(to_lang="English")
+    
     for row in range(len(data[column])):
         try:
-            lang = detect(data[column][row])
+            translator = Translator(service_urls=['translate.google.com','translate.google.co.kr',])
+            lang = translator.detect(data[column][row])
             print(lang)
             time.sleep(5)
             if lang != 'en' :
                 print(data[column][row])
-                value = translator.translate(data[column][row])
+                value = translator.translate(data[column][row]).text
                 print(str(value))
                 data[column][row] = str(value)
                 time.sleep(5)
