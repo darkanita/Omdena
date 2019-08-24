@@ -18,6 +18,7 @@ import time
 #from translate import Translator
 import string
 import re
+from autocorrect import spell
 
 pd.options.mode.chained_assignment = None 
 
@@ -249,7 +250,7 @@ def translate_columns(data,column='INCIDENT TITLE'):
             #time.sleep(5)
             if lang != 'en' :
                 print(data[column][row])
-                value = translator.translate(data[column][row]).text
+                value = translator.translate(spell(data[column][row])).text
                 print(str(value))
                 data[column][row] = str(value)
                 #time.sleep(5)
