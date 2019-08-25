@@ -250,7 +250,8 @@ def translate_columns(data,column='INCIDENT TITLE'):
             #print(lang)
             #time.sleep(5)
             if lang != 'en' :
-                print(data[column][row])
+                #print(data[column][row])
+                print(len(data[column][row]))
                 value = translator.translate(spell(data[column][row])).text
                 print(str(value))
                 data[column][row] = str(value)
