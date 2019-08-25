@@ -253,7 +253,7 @@ def translate_columns(data,column='INCIDENT TITLE', spell=False):
             if lang != 'en' :
                 to_translate = sent_tokenize(data[column][row])
                 new_text = []
-                for val in tqdm(to_translate):
+                for val in to_translate:
                 #print(data[column][row])
                 #print(len(data[column][row]))
                     if len(val) < 3000:
