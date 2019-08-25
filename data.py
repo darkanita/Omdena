@@ -251,10 +251,13 @@ def translate_columns(data,column='INCIDENT TITLE'):
             #time.sleep(5)
             if lang != 'en' :
                 #print(data[column][row])
-                print(len(data[column][row]))
-                value = translator.translate(spell(data[column][row])).text
-                print(str(value))
-                data[column][row] = str(value)
+                #print(len(data[column][row]))
+                if len(data[column][row]) <= 3000
+                    value = translator.translate(spell(data[column][row])).text
+                    print(str(value))
+                    data[column][row] = str(value)
+                else:
+                    print(row)
                 #time.sleep(5)
         except Exception as e:
             print(data[column][row])
