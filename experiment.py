@@ -77,6 +77,3 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
     main(args.aws_access_key_id, args.aws_secret_access_key, args.here_id,args.here_code)
-
-
-

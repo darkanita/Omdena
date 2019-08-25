@@ -250,14 +250,18 @@ def translate_columns(data,column='INCIDENT TITLE'):
             #print(lang)
             #time.sleep(5)
             if lang != 'en' :
+                to_translate = sent_tokenize(data[column][row])
+                new_text = []
+                for val in to_translate:
                 #print(data[column][row])
                 #print(len(data[column][row]))
-                if len(data[column][row]) <= 3000:
-                    value = translator.translate(spell(data[column][row])).text
-                    print(str(value))
-                    data[column][row] = str(value)
-                else:
-                    print(row)
+                    if len(val) < 3000:
+                        value = translator.translate(spell(val)).text
+                        print(str(value))
+                        new_text.append(value)
+                    else:
+                        print(row)
+                data[column][row] = str(' '.join(new_text))
                 #time.sleep(5)
         except Exception as e:
             print(data[column][row])
