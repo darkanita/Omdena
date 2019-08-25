@@ -19,6 +19,7 @@ import time
 import string
 import re
 from autocorrect import spell
+from tqdm import tqdm
 
 pd.options.mode.chained_assignment = None 
 
@@ -243,7 +244,7 @@ def translate_columns(data,column='INCIDENT TITLE', spell=False):
     problems = []
     #translator= Translator(to_lang="English")
     
-    for row in range(len(data[column])):
+    for row in tqdm(range(len(data[column]))):
         try:
             translator = Translator(service_urls=['translate.google.com','translate.google.co.kr',])
             lang = translator.detect(data[column][row]).lang
@@ -252,7 +253,7 @@ def translate_columns(data,column='INCIDENT TITLE', spell=False):
             if lang != 'en' :
                 to_translate = sent_tokenize(data[column][row])
                 new_text = []
-                for val in to_translate:
+                for val in tqdm(to_translate):
                 #print(data[column][row])
                 #print(len(data[column][row]))
                     if len(val) < 3000:
