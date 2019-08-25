@@ -257,10 +257,10 @@ def translate_columns(data,column='INCIDENT TITLE'):
                 #print(len(data[column][row]))
                     if len(val) < 3000:
                         value = translator.translate(spell(val)).text
-                        print(str(value))
+                        #print(str(value))
                         new_text.append(value)
                     else:
-                        print(row)
+                        print(row, len(val))
                 data[column][row] = str(' '.join(new_text))
                 #time.sleep(5)
         except Exception as e:
