@@ -29,12 +29,12 @@ def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
     #dataSet_India = dataSet[dataSet['COUNTRY']=='India']
     #dataSet_India = dataSet_India[dataSet_India['CITY'].isin(['Delhi','Mumbai'])]
     print(dataSet.shape)
-    dataSet,problemsT = translate_columns(dataSet,'INCIDENT TITLE')
-    print(problemsT)
+    #dataSet,problemsT = translate_columns(dataSet,'INCIDENT TITLE')
+    #print(problemsT)
     #obj = upload_data(dataSet,bucket,key,aws_access_key_id,aws_secret_access_key)
     #print(obj)
-    #dataSet,problemsD = translate_columns(dataSet,'DESCRIPTION')
-    #print(problemsD)
+    dataSet,problemsD = translate_columns(dataSet,'DESCRIPTION')
+    print(problemsD)
     #obj = upload_data(dataSet,bucket,key,aws_access_key_id,aws_secret_access_key)
     #print(obj)
     #dataSet,wordsT = normalize_text(dataSet,'INCIDENT TITLE')
