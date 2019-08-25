@@ -239,7 +239,7 @@ def normalize_text(data,column='INCIDENT TITLE'):
     #data[column+' WORDS'] = [[porter.stem(WNlemma.lemmatize(word.lower())) for word in text if word.isalpha() and not word in stop_words] 
     return data,words_total
 
-def translate_columns(data,column='INCIDENT TITLE'):
+def translate_columns(data,column='INCIDENT TITLE', spell=False):
     problems = []
     #translator= Translator(to_lang="English")
     
@@ -256,7 +256,10 @@ def translate_columns(data,column='INCIDENT TITLE'):
                 #print(data[column][row])
                 #print(len(data[column][row]))
                     if len(val) < 3000:
-                        value = translator.translate(spell(val)).text
+                        if spell:
+                            value = translator.translate(spell(val)).text
+                        else:
+                            value = translator.translate(val).text
                         #print(str(value))
                         new_text.append(value)
                     else:
