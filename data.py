@@ -21,6 +21,10 @@ import re
 from autocorrect import spell
 from tqdm import tqdm
 
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+
 pd.options.mode.chained_assignment = None 
 
 def load_data(url):
@@ -193,9 +197,6 @@ def create_category_columns(data,column='CATEGORY'):
     return data, category
 
 def normalize_text(data,column='INCIDENT TITLE'):
-    nltk.download('punkt')
-    nltk.download('stopwords')
-    nltk.download('wordnet')
     porter = PorterStemmer()
     WNlemma = nltk.WordNetLemmatizer()
     stop_words = set(stopwords.words('english'))
