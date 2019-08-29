@@ -247,21 +247,24 @@ def translate_columns(data,column='INCIDENT TITLE', spell=False):
     for row in tqdm(range(len(data[column]))):
         try:
             translator = Translator(service_urls=['translate.google.com','translate.google.co.kr',])
-            lang = translator.detect(data[column][row]).lang
-            #print(lang)
-            #time.sleep(5)
-            if lang != 'en' :
-                to_translate = sent_tokenize(data[column][row])
-                if spell:
-                    to_translate = [spell(val) for val in to_translate]
-                try:
-                    traduced = translator.translate(to_translate)
-                except Exception as e:
-                    print(row,to_translate)
-                    problems.append(row)
-                    continue
-                new_text = [val.text for val in traduced]
-                data[column][row] = str(' '.join(new_text))
+            if data[column][row]:
+                lang = translator.detect(data[column][row]).lang
+                #print(lang)
+                #time.sleep(5)
+                if lang != 'en' :
+                    to_translate = sent_tokenize(data[column][row])
+                    if spell:
+                        to_translate = [spell(val) for val in to_translate]
+                    try:
+                        traduced = translator.translate(to_translate)
+                    except Exception as e:
+                        print(row,to_translate)
+                        problems.append(row)
+                        continue
+                    new_text = [val.text for val in traduced]
+                    data[column][row] = str(' '.join(new_text))
+            else:
+                data[column][row] = None
                 #time.sleep(5)
         except Exception as e:
             print(data[column][row])
