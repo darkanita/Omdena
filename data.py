@@ -246,9 +246,11 @@ def translate_columns(data,column='INCIDENT TITLE', spell=False):
     #translator= Translator(to_lang="English")
     
     for row in tqdm(range(len(data[column]))):
+        pattern_wd_eng = (r'[A-Za-z0-9.,]+')
         try:
             translator = Translator(service_urls=['translate.google.com','translate.google.co.kr',])
             if data[column][row]:
+                data[column][row] = str(' '.join(re.findall(pattern_wd_eng, data[column][row])))
                 lang = translator.detect(data[column][row]).lang
                 #print(lang)
                 #time.sleep(5)
