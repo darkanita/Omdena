@@ -241,14 +241,13 @@ def normalize_text(data,column='INCIDENT TITLE'):
     #data[column+' WORDS'] = [[porter.stem(WNlemma.lemmatize(word.lower())) for word in text if word.isalpha() and not word in stop_words] 
     return data,words_total
 
-def translate_columns(data,column='INCIDENT TITLE', spell=False):
+def translate_columns(data,column='INCIDENT TITLE', spell=False, tries = 1):
     problems = []
     #translator= Translator(to_lang="English")
-    
     for row in tqdm(range(len(data[column]))):
         pattern_wd_eng = (r'[A-Za-z0-9.,]+')
         try:
-            translator = Translator(service_urls=['translate.google.com','translate.google.co.kr',])
+            translator = Translator(service_urls=['translate.google.com','translate.google.co.kr','https://translate.google.co.in',])
             if data[column][row]:
                 data[column][row] = str(' '.join(re.findall(pattern_wd_eng, data[column][row])))
                 lang = translator.detect(data[column][row]).lang
@@ -270,8 +269,12 @@ def translate_columns(data,column='INCIDENT TITLE', spell=False):
                 data[column][row] = None
                 #time.sleep(5)
         except Exception as e:
-            print(data[column][row])
-            print(str(e))
-            problems.append(row)
-            continue     
+            print(str(e)) 
+        except:    
+            if tries > 5:
+                print(data[column][row])
+                problems.append(row)
+            tri = tries + 1
+            print("Falló, reintentando por vez No. {0} ".format(tries))
+            translate_columns(data , column , tries = tri) 
     return data,problems
