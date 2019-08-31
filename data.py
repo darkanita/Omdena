@@ -241,6 +241,34 @@ def normalize_text(data,column='INCIDENT TITLE'):
     #data[column+' WORDS'] = [[porter.stem(WNlemma.lemmatize(word.lower())) for word in text if word.isalpha() and not word in stop_words] 
     return data,words_total
 
+def detect_language(text,translator,problems,row,tries = 1):
+    try:
+        return translator.detect(text).lang, problems
+    except Exception as e:
+        print(str(e))
+    except:    
+            if tries > 5:
+                print(text,row)
+                problems.append(row)
+                return None, problems
+            tri = tries + 1
+            print("Fail, trying again Number. {0} ".format(tries))
+            return detect_language(text,translator,problems,row,tries = tri)
+
+def translate_text(text,translator,problems,row,tries = 1):
+    try:
+        return translator.translate(text), problems
+    except Exception as e:
+        print(str(e))
+    except:    
+            if tries > 5:
+                print(text,row)
+                problems.append(row)
+                return None, problems
+            tri = tries + 1
+            print("Fail, trying again Number. {0} ".format(tries))
+            return translate_text(text,translator,problems,row,tries = tri)
+
 def translate_columns(data,column='INCIDENT TITLE', spell=False, tries = 1):
     problems = []
     #translator= Translator(to_lang="English")
@@ -250,31 +278,22 @@ def translate_columns(data,column='INCIDENT TITLE', spell=False, tries = 1):
             translator = Translator(service_urls=['translate.google.com','translate.google.co.kr','translate.google.co.in','translate.google.com.br','translate.google.co.id','translate.google.co.th',])
             if data[column][row]:
                 data[column][row] = str(' '.join(re.findall(pattern_wd_eng, data[column][row])))
-                lang = translator.detect(data[column][row]).lang
-                #print(lang)
-                #time.sleep(5)
+                #lang = translator.detect(data[column][row]).lang
+                lang,problems = detect_language(data[column][row],translator,problems,row)
+                data['language'][row] = lang
                 if lang != 'en' :
                     to_translate = sent_tokenize(data[column][row])
                     if spell:
                         to_translate = [spell(val) for val in to_translate]
-                    try:
-                        traduced = translator.translate(to_translate)
-                    except Exception as e:
-                        print(row,to_translate)
-                        problems.append(row)
-                        continue
-                    new_text = [val.text for val in traduced]
-                    data[column][row] = str(' '.join(new_text))
+                    
+                    traduced, problems = translate_text(to_translate,translator,problems,row)
+                    if traduced:
+                        new_text = [val.text for val in traduced]
+                        data[column][row] = str(' '.join(new_text))
+                    else:
+                        data[column][row] = None
             else:
                 data[column][row] = None
-                #time.sleep(5)
         except Exception as e:
             print(str(e)) 
-        except:    
-            if tries > 5:
-                print(data[column][row])
-                problems.append(row)
-            tri = tries + 1
-            print("Falló, reintentando por vez No. {0} ".format(tries))
-            translate_columns(data , column , tries = tri) 
     return data,problems
