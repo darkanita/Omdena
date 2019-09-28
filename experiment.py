@@ -40,7 +40,7 @@ def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
 
     dataSet_India = dataSet[dataSet['COUNTRY']=='India']
     #dataSet_India = dataSet_India[dataSet_India['CITY'].isin(['Delhi','Mumbai'])]
-    print(dataSet_India.head())
+    print(dataSet_India[['INCIDENT TITLE','CITY','DESCRIPTION']].head())
     #dataSet,problemsT = translate_columns(dataSet,'INCIDENT TITLE')
     #print(problemsT)
     #obj = upload_data(dataSet,bucket,key,aws_access_key_id,aws_secret_access_key)
