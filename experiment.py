@@ -17,6 +17,16 @@ def first_preprocessing(data,app_id,app_code):
     data,problems = add_data_location(data,app_id,app_code)
     print(problems)
     print(data.shape)
+    data,problemsD = translate_columns(data,'DESCRIPTION')
+    print(problemsD)
+    data,wordsT = normalize_text(data,'INCIDENT TITLE')
+    print(list(set(wordsT)))
+    data,wordsT = normalize_text(data,'INCIDENT TITLE')
+    print(list(set(wordsT)))
+    data,wordsD = normalize_text(data,'DESCRIPTION')
+    print(list(set(wordsD)))
+    print(data[['INCIDENT TITLE','INCIDENT TITLE WORDS']].head())
+    print(data[['DESCRIPTION','DESCRIPTION WORDS']].head())
     return data
 
 def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
@@ -26,32 +36,30 @@ def main(aws_access_key_id,aws_secret_access_key,app_id,app_code):
     #dataSet = first_preprocessing(dataSet,app_id,app_code)
     urlDataSet = 'https://darkanita.s3-sa-east-1.amazonaws.com/Safety_GPS1.csv'
     dataSet = load_data(urlDataSet)
-    #dataSet_India = dataSet[dataSet['COUNTRY']=='India']
-    #dataSet_India = dataSet_India[dataSet_India['CITY'].isin(['Delhi','Mumbai'])]
     print(dataSet.shape)
+
+    dataSet_India = dataSet[dataSet['COUNTRY']=='India']
+    #dataSet_India = dataSet_India[dataSet_India['CITY'].isin(['Delhi','Mumbai'])]
+    print(dataSet_India.head())
     #dataSet,problemsT = translate_columns(dataSet,'INCIDENT TITLE')
     #print(problemsT)
     #obj = upload_data(dataSet,bucket,key,aws_access_key_id,aws_secret_access_key)
     #print(obj)
-    dataSet,problemsD = translate_columns(dataSet,'DESCRIPTION')
-    print(problemsD)
+    
+    
     #obj = upload_data(dataSet,bucket,key,aws_access_key_id,aws_secret_access_key)
     #print(obj)
-    dataSet,wordsT = normalize_text(dataSet,'INCIDENT TITLE')
-    print(list(set(wordsT)))
+    
     #obj = upload_data(dataSet,bucket,key,aws_access_key_id,aws_secret_access_key)
     #print(obj)
-    dataSet,wordsD = normalize_text(dataSet,'DESCRIPTION')
-    print(list(set(wordsD)))
-    print(dataSet[['INCIDENT TITLE','INCIDENT TITLE WORDS']].head())
-    print(dataSet[['DESCRIPTION','DESCRIPTION WORDS']].head())
+    
     #print(dataSet[dataSet['DESCRIPTION WORDS'].isna()]['DESCRIPTION'].head())
     #print(dataSet_India['INCIDENT TITLE'].unique()[:100])
     #print(dataSet['STATE'].unique())
     #print(dataSet['COUNTY'].unique())
     #print(dataSet['CITY'].unique())
-    obj = upload_data(dataSet,bucket,key,aws_access_key_id,aws_secret_access_key)
-    print(obj)
+    #obj = upload_data(dataSet,bucket,key,aws_access_key_id,aws_secret_access_key)
+    #print(obj)
 
 if __name__ == '__main__':
     import argparse
